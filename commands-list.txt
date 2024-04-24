@@ -3,4 +3,11 @@ openssl genrsa -out ca/private/cakey.pem 4096 # Utworzenie klucz ptywatnego CA
 openssl req -new -x509 -days 1825 -key ca/private/cakey.pem -out ca/cacert.pem -config openssl.cnf # Utworzenie certyfikatu CA
 openssl rsa -in ca/private/cakey.pem -out ca/private/cakey.pem -outform PEM -des3 # Podapisanie certyfikatu CA kluczem prywantym CA
 
+# Wystawianie certifukatu dla serwera
+## Zrobienie requesta o certifikat
+openssl req -new -keyout serverkey01.pem -out serverrequest01.req -config openssl.cnf
+## zatwierdzenia requsta przez CA
+openssl ca -in serverrequest01.req -config openssl.cnf
+
+# Wystawianie certyfikatu dla klienta
 
