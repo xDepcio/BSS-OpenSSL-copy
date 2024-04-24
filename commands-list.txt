@@ -10,7 +10,13 @@ openssl req -new -keyout adrwal-serverkey01.pem -out adrwal-serverrequest01.req 
 openssl ca -in adrwal-serverrequest01.req -config openssl.cnf
 
 # Wystawianie certyfikatu dla klienta
-# Zrobienie requesta
+## Zrobienie requesta
 openssl req -new -keyout adrwal-clientkey01.pem -out adrwal-clientrequest01.req -config openssl.cnf
-# Podpisanie request przez CA
+## Podpisanie request przez CA
 openssl ca -in adrwal-clientrequest01.req -config openssl.cnf
+
+# Wystaiwnie cert dla jedrka (haslo jedrek123)
+## Request
+openssl req -new -keyout jgrabski-clientkey01.pem -out jgrabski-clientrequest01.req -config openssl.cnf
+## Podpisanie przez CA
+openssl ca -in jgrabski-clientrequest01.req -config openssl.cnf
