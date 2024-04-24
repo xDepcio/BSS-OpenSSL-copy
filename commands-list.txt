@@ -5,9 +5,12 @@ openssl rsa -in ca/private/cakey.pem -out ca/private/cakey.pem -outform PEM -des
 
 # Wystawianie certifukatu dla serwera
 ## Zrobienie requesta o certifikat
-openssl req -new -keyout serverkey01.pem -out serverrequest01.req -config openssl.cnf
+openssl req -new -keyout adrwal-serverkey01.pem -out adrwal-serverrequest01.req -config openssl.cnf
 ## zatwierdzenia requsta przez CA
-openssl ca -in serverrequest01.req -config openssl.cnf
+openssl ca -in adrwal-serverrequest01.req -config openssl.cnf
 
 # Wystawianie certyfikatu dla klienta
-
+# Zrobienie requesta
+openssl req -new -keyout adrwal-clientkey01.pem -out adrwal-clientrequest01.req -config openssl.cnf
+# Podpisanie request przez CA
+openssl ca -in adrwal-clientrequest01.req -config openssl.cnf
