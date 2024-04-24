@@ -20,3 +20,6 @@ openssl ca -in adrwal-clientrequest01.req -config openssl.cnf
 openssl req -new -keyout jgrabski-clientkey01.pem -out jgrabski-clientrequest01.req -config openssl.cnf
 ## Podpisanie przez CA
 openssl ca -in jgrabski-clientrequest01.req -config openssl.cnf
+
+# Wygenerowanie listy CRL
+openssl ca -gencrl -out ca/crl/list01.crl -config openssl.cnf
