@@ -1,0 +1,176 @@
+# niezbędne zmienne środowiska systemowego: katalog domowy dla OpenSSL
+# oraz nazwa pliku z danymi dla generatora liczb pseudolosowych
+HOME	 = .
+RANDFILE = $HOME/rand
+
+[ ca ]
+# identyfikator sekcji zawierającej konfigurację domyślnego CA
+# (w pliku można zdefiniować kilka sekcji opisujących politykę
+# dla kilku CA)
+default_ca = my_ca
+
+[ my_ca ]
+# katalog w którym przechowywane są dane CA
+dir            = ./ca
+
+# katalog w którym przetrzymywane są wydane certyfikaty
+# (jest to katalog ca/certs)
+certs          = $dir/certs
+
+# katalog w którym przetrzymywane są wydane listy CRL
+# (jest to katalog ca/crl)
+crl_dir	       = $dir/crl
+
+# plik zawierający indeks (zestawienie) wydanych certyfikatów
+# (jest to plik ca/index.txt)
+database       = $dir/index.txt
+
+# katalog zwawierający nowowydane certyfikaty
+# (jest to katalog ca/newcerts)
+new_certs_dir  = $dir/newcerts
+
+# plik zawierający certyfikat CA
+# (jest to plik ca/cacert.pem)
+certificate    = $dir/cacert.pem
+
+# aktualny numer seryjny wydawanego certyfikatu
+# (jest to plik ca/serial.txt)
+serial	       = $dir/serial.txt
+
+# aktualna lista CRL
+# (jest to plik ca/crl.pem)
+crl            = $dir/crl.pem
+
+# klucz prywatny CA
+# (jest to plik ca/private/cakey.pem)
+private_key    = $dir/private/cakey.pem
+
+# plik zawierający informacje dla generatora liczb pseudolosowch
+# (jest to plik ca/private/rand)
+RANDFILE       = $dir/private/rand
+
+# sekcja definiująca rozszerzenia dodawane do certyfikatu
+x509_extensions	= usr_cert
+
+# domyślny okres ważności certyfikatu
+default_days     = 365
+
+# domyślny okres pomiędzy kolejnymi listami CRL
+default_crl_days = 30
+
+# używana funkcja skrótu
+default_md       = sha256
+
+# zachowywanie kolejności wg. DN (nazwy wyróżniającej)
+preserve         = no
+
+# określenie sekcji dotyczącej właściwości zgłoszeń certyfikacyjnych
+# (polityka dla zgłoszeń certyfikacyjnych)
+policy		= policy_match
+
+[ policy_match ]
+
+# pola wymagane i identyczne co do treści (ich zmiana podczas generowania
+# zgłoszenia certyfikacyjnego spowoduje uniemożliwienie wystawienia 
+# certyfikatu)
+countryName		= match
+stateOrProvinceName	= match
+organizationName	= match
+
+# pole wymagane
+commonName		= supplied
+
+# pola opcjonalne
+organizationalUnitName	= optional
+emailAddress		= optional
+
+[ req ]
+# domyślna długość klucza
+default_bits		= 2048
+
+# domyślna nazwa pliku z kluczem
+default_keyfile 	= privkey.pem
+
+# dane w zgłoszeniu certyfikacyjnym
+distinguished_name	= req_distinguished_name
+
+# atrybuty zgłoszenia certyfikacyjnego 
+attributes		= req_attributes
+
+# sekcja z rozszerzeniami dla autocertyfikatów
+x509_extensions	        = v3_ca	
+
+# format wprowadzanych danych
+string_mask = nombstr
+
+[ req_distinguished_name ]
+countryName                     = Kod kraju (2 litery)
+countryName_default             = PL
+countryName_min                 = 2
+countryName_max                 = 2
+
+stateOrProvinceName             = Województwo
+stateOrProvinceName_default     = mazowieckie
+
+localityName                    = Lokalizacja (np. miasto)
+localityName_default            = Warszawa
+
+O.organizationName              = Nazwa organizacji
+O.organizationName_default      = PW
+
+organizationalUnitName          = Nazwa jednostki
+organizationalUnitName_default  = WEiTI
+
+commonName                      = Imię i nazwisko właściciela
+commonName_max                  = 64
+
+emailAddress                    = Adres poczty elektronicznej
+emailAddress_max                = 64
+
+[ req_attributes ]
+# challengePassword               = Hasło
+# challengePassword_min           = 4
+# challengePassword_max           = 20
+
+[ usr_cert ]
+# aby certyfikat użytkownika nie był interpretowany jako certyfikat CA
+# (certyfikat użytkownika nie może być użyty do wystawiania kolejnych 
+# certyfikatów)
+basicConstraints=CA:FALSE
+
+# komentarz dodawany do certyfikatu użytkownika
+nsComment          = "Testowe CA z laboratorium BSS"
+
+# opcjonalne pola związane z informacjami o CA, lokalizację CRL, 
+# polityki certyfikacji itp.
+# nsCaRevocationUrl = http://www.myca.dom/crl.pem
+# nsBaseUrl, nsRevocationUrl, nsRenewalUrl, nsCaPolicyUrl
+# nsSslServerName
+
+# dodatkowe opcje
+subjectKeyIdentifier   = hash
+authorityKeyIdentifier = keyid,issuer:always
+
+[ v3_req ]
+# rozszerzenia dodawane do zgłoszenia certyfikacyjnego 
+# użytkownika
+
+# nie będzie to certyfikat służący do podpisywania dalszych
+# certyfikatów
+basicConstraints = CA:FALSE
+
+# użycie klucza (usługa niezaprzeczalności, podpis, 
+# szyfrowanie kluczy)
+keyUsage = nonRepudiation, digitalSignature, keyEncipherment
+
+[ v3_ca ]
+# rozszerzenia dla certyfikatu CA
+subjectKeyIdentifier   = hash
+authorityKeyIdentifier = keyid:always,issuer:always
+basicConstraints       = CA:true
+keyUsage               = cRLSign, keyCertSign
+
+[ crl_ext ]
+# rozszerzenia dla list CRL
+authorityKeyIdentifier = keyid:always,issuer:always
+
